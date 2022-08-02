@@ -129,6 +129,8 @@ int s21_transpose(matrix_t *A, matrix_t *result) {
 
 int s21_calc_complements(matrix_t *A, matrix_t *result) {
     int errCode = 0;
+    int coor_1 = 0;
+    int coor_2 = 0;
     matrix_t minor;
 
     if ((A->columns != A->rows) || (A->rows <= 0) || (A->columns <= 0)) {
@@ -136,13 +138,23 @@ int s21_calc_complements(matrix_t *A, matrix_t *result) {
     } else {
         s21_create_matrix(A->rows, A->columns, result);
         s21_create_matrix(A->rows - 1, A->columns - 1, &minor);
-        for (int i = 0, k = i; i < A->rows; i++) {
+        for (int i = 0; i < A->rows; i++) {
             for (int j = 0, l = j; j < A->columns; j++) {
-                // Start from here
+                for (int l = 1; l < A->rows - 1; l++) {
+                    for (int k = 1; k < A->columns - 1; k++) {
+                        coor_1 = i + l;
+                        coor_2 = j + k;
+                        minor.matrix[i][j] = A->matrix[coor_1][coor_2];
+                    }
+                }
                 s21_determinant(&minor, &(result->matrix[i][j]));
+                if ((i + j) % 2 != 0)
+                    result->matrix[i][j] *= -1;
             }
         }
     }
+    s21_remove_matrix(&minor);
+    return errCode;
 }
 
 int s21_determinant(matrix_t *A, double *result) {
@@ -181,4 +193,8 @@ int s21_determinant(matrix_t *A, double *result) {
         *result = deter;
     }
     return errCode;
+}
+
+int s21_inverse_matrix(matrix_t *A, matrix_t *result) {
+
 }
