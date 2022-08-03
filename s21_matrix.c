@@ -51,6 +51,8 @@ int s21_sum_matrix(matrix_t *A, matrix_t *B, matrix_t *result) {
     int errCode = 0;
 
     if ((A->columns != B->columns) || (A->rows != B->rows)) {
+        errCode = 2;
+    } else if ((A->columns <= 0) || (A->rows <= 0) || (B->columns <= 0) || (B->rows <= 0)) {
         errCode = 1;
     } else {
         s21_create_matrix(A->rows, A->columns, result);
@@ -67,6 +69,8 @@ int s21_sub_matrix(matrix_t *A, matrix_t *B, matrix_t *result) {
     int errCode = 0;
 
     if ((A->columns != B->columns) || (A->rows != B->rows)) {
+        errCode = 2;
+    } else if ((A->columns <= 0) || (A->rows <= 0) || (B->columns <= 0) || (B->rows <= 0)) {
         errCode = 1;
     } else {
         s21_create_matrix(A->rows, A->columns, result);
@@ -99,6 +103,8 @@ int s21_mult_matrix(matrix_t *A, matrix_t *B, matrix_t *result) {
     int errCode = 0;
 
     if ((A->columns != B->rows) || (A->rows != B->columns)) {
+        errCode = 2;
+    } else if ((A->columns <= 0) || (A->rows <= 0) || (B->columns <= 0) || (B->rows <= 0)) {
         errCode = 1;
     } else {
         s21_create_matrix(A->rows, A->columns, result);
@@ -133,7 +139,9 @@ int s21_calc_complements(matrix_t *A, matrix_t *result) {
     int coor_2 = 0;
     matrix_t minor;
 
-    if ((A->columns != A->rows) || (A->rows <= 0) || (A->columns <= 0)) {
+    if (A->columns != A->rows) {
+        errCode = 2;
+    } else if ((A->columns <= 0) || (A->rows <= 0)) {
         errCode = 1;
     } else {
         s21_create_matrix(A->rows, A->columns, result);
@@ -164,7 +172,9 @@ int s21_determinant(matrix_t *A, double *result) {
     double diag = 1;
     double deter = 0;
     
-    if ((A->columns != A->rows) || (A->rows <= 0) || (A->columns <= 0)) {
+    if (A->columns != A->rows) {
+        errCode = 2;
+    } else if ((A->columns <= 0) || (A->rows <= 0)) {
         errCode = 1;
     } else {
         for (int i = 0; i < A->rows; i++) {
@@ -196,5 +206,24 @@ int s21_determinant(matrix_t *A, double *result) {
 }
 
 int s21_inverse_matrix(matrix_t *A, matrix_t *result) {
+    int errCode = 0;
+    double det = 0;
+    matrix_t minors;
+    matrix_t trans_minors;
 
+    s21_determinant(A, &det);
+    if ((A->columns != A->rows) || (det == 0)) {
+        errCode = 2;
+    } else if ((A->columns <= 0) || (A->rows <= 0)) {
+        errCode = 1;
+    } else {
+        s21_calc_complements(A, &minors);
+        s21_create_matrix(A->rows, A->columns, &trans_minors);
+        s21_transpose(&minors, &trans_minors);
+        s21_create_matrix(A->rows, A->columns, &result);
+        s21_mult_number(&trans_minors, (1 / det), result);
+        s21_remove_matrix(&minors);
+        s21_remove_matrix(&trans_minors);
+    }
+    return errCode;
 }
