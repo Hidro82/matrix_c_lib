@@ -14,12 +14,16 @@ int s21_calc_complements(matrix_t *A, matrix_t *result) {
         s21_create_matrix(A->rows, A->columns, result);
         s21_create_matrix(A->rows - 1, A->columns - 1, &minor);
         for (int i = 0; i < A->rows; i++) {
-            for (int j = 0, l = j; j < A->columns; j++) {
-                for (int l = 1; l < A->rows - 1; l++) {
-                    for (int k = 1; k < A->columns - 1; k++) {
+            for (int j = 0; j < A->columns; j++) {
+                for (int l = 1; l < A->rows; l++) {
+                    for (int k = 1; k < A->columns; k++) {
                         coor_1 = i + l;
                         coor_2 = j + k;
-                        minor.matrix[i][j] = A->matrix[coor_1][coor_2];
+                        if (coor_2 >= A->rows)
+                            coor_2 -= A->rows;
+                        if (coor_1 >= A->rows)
+                            coor_1 -= A->rows;
+                        minor.matrix[l - 1][k - 1] = A->matrix[coor_1][coor_2];
                     }
                 }
                 s21_determinant(&minor, &(result->matrix[i][j]));

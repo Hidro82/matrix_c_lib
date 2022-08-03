@@ -3,16 +3,15 @@
 int s21_create_matrix(int rows, int columns, matrix_t *result) {
     int errCode = 1;    
     if (rows > 0 && columns > 0) {    
-        double** matrix = malloc(sizeof *matrix * rows);
-        if (matrix)
+        result->matrix = calloc(rows, sizeof(double *));
+        if (result->matrix != NULL)
         {
             for (int i = 0; i < rows; i++) {
-                matrix[i] = malloc(sizeof *matrix[i] * columns);
+                result->matrix[i] = calloc(columns, sizeof(double));
             }
         }
         result->rows = rows;
         result->columns = columns;
-        result->matrix = matrix;
         errCode = 0;
     }
     return errCode;
