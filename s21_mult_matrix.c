@@ -6,7 +6,9 @@ int s21_mult_matrix(matrix_t *A, matrix_t *B, matrix_t *result) {
 
     if ((A->columns != B->rows)) {
         errCode = 2;
-    } else if ((A->columns <= 0) || (A->rows <= 0) || (B->columns <= 0) || (B->rows <= 0)) {
+    } else if ((A->columns <= 0) || (A->rows <= 0)
+    || (B->columns <= 0) || (B->rows <= 0)
+    || (A->matrix == NULL) || (B->matrix == NULL)) {
         errCode = 1;
     } else {
         flag = s21_create_matrix(A->rows, B->columns, result);
