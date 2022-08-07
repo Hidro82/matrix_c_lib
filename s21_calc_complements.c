@@ -4,6 +4,7 @@ int s21_calc_complements(matrix_t *A, matrix_t *result) {
     int errCode = 0;
     int coor_1 = 0;
     int coor_2 = 0;
+    double deter = 0;
     matrix_t minor;
 
     if (A->columns != A->rows) {
@@ -21,14 +22,15 @@ int s21_calc_complements(matrix_t *A, matrix_t *result) {
                         coor_2 = j + k;
                         if (coor_2 >= A->rows)
                             coor_2 -= A->rows;
-                        if (coor_1 >= A->rows)
-                            coor_1 -= A->rows;
+                        if (coor_1 >= A->columns)
+                            coor_1 -= A->columns;
                         minor.matrix[l - 1][k - 1] = A->matrix[coor_1][coor_2];
                     }
                 }
-                s21_determinant(&minor, &(result->matrix[i][j]));
-                if ((i + j) % 2 != 0)
-                    result->matrix[i][j] *= -1;
+                s21_determinant(&minor, &deter);
+                matrix_print(&minor);
+                printf("determin %d %d %f\n", i, j, deter);
+                result->matrix[i][j] = deter;
             }
         }
     }

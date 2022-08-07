@@ -5,6 +5,7 @@
 #define FAILURE 0
 
 #include <stdlib.h>
+#include <stdio.h>
 #include <math.h>
 
 typedef struct matrix_struct {
@@ -24,5 +25,6 @@ int s21_transpose(matrix_t *A, matrix_t *result);
 int s21_calc_complements(matrix_t *A, matrix_t *result);
 int s21_determinant(matrix_t *A, double *result);
 int s21_inverse_matrix(matrix_t *A, matrix_t *result);
+void matrix_print(matrix_t *A);
 
 #endif  // SRC_S21_MATRIX_H_

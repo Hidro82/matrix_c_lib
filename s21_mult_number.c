@@ -4,8 +4,10 @@ int s21_mult_number(matrix_t *A, double number, matrix_t *result) {
     int errCode = 0;
     int flag = 0;
 
-    if ((A->columns <= 0) || (A->rows <= 0) || A->matrix == NULL) {
+    if ((A == NULL) || (A->matrix == NULL)) {
         errCode = 1;
+    } else if ((A->columns <= 0) || (A->rows <= 0)) {
+        errCode = 2;
     } else {
         flag = s21_create_matrix(A->rows, A->columns, result);
         if (flag == 0) {

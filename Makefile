@@ -13,7 +13,7 @@ s21_matrix.a:
 	ar rc s21_matrix.a *.o
 	ranlib s21_matrix.a
 test: s21_matrix.a
-	gcc $(GCOVFLAGSLIN) -g -c *.c ./Tests/test.c
+	gcc $(GCOVFLAGSLIN) -g -c *.c ./Tests/s21_tests.c
 	gcc $(GCOVFLAGSLIN) -fsanitize=address *.o -o matrix_test
 	./matrix_test
 gcov_report: s21_matrix.a test
@@ -24,7 +24,7 @@ check: s21_matrix.a
 	@cppcheck *.h *.c
 	@cp ../materials/linters/CPPLINT.cfg ./
 	@python3 ../materials/linters/cpplint.py --extension=c *.c *.h
-	@$(CC) *.c test.c -lcheck -lm
+	@$(CC) *.c s21_tests.c -lcheck -lm
 	@valgrind --leak-check=full ./a.out
 	@rm CPPLINT.cfg
 clean:
