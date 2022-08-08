@@ -1,7 +1,8 @@
 #include "s21_matrix.h"
 
 int s21_create_matrix(int rows, int columns, matrix_t *result) {
-    int errCode = 1;    
+    int errCode = 1;
+
     if (rows > 0 && columns > 0) {    
         result->matrix = calloc(rows, sizeof(double *));
         if (result->matrix != NULL)

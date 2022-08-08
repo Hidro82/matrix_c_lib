@@ -372,7 +372,6 @@ START_TEST(test_s21_calc_complements) {
     int ret = s21_calc_complements(&matrix, &res_my);
     ck_assert_int_eq(ret, 0);
     ret = s21_eq_matrix(&res_org, &res_my);
-    matrix_print(&res_my);
     ck_assert_int_eq(ret, 1);
     s21_remove_matrix(&matrix);
     s21_remove_matrix(&res_my);

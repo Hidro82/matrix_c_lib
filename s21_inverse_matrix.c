@@ -1,17 +1,15 @@
 #include "s21_matrix.h"
 
 int s21_inverse_matrix(matrix_t *A, matrix_t *result) {
-    int errCode = 0;
+    int errCode = matrix_checker(A);;
     double det = 0;
     matrix_t minors;
     matrix_t trans_minors;
 
     s21_determinant(A, &det);
-    if ((A->columns != A->rows) || (det == 0)) {
-        errCode = 2;
-    } else if ((A->columns <= 0) || (A->rows <= 0)) {
-        errCode = 1;
-    } else {
+    if (!errCode)
+        errCode = sqr_checker(A);
+    if (!errCode && (det != 0)) {
         s21_calc_complements(A, &minors);
         s21_create_matrix(A->rows, A->columns, &trans_minors);
         s21_transpose(&minors, &trans_minors);
