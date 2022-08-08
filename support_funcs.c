@@ -169,6 +169,7 @@ void det_logic(matrix_t *A, double *result) {
 }
 
 void transposer(matrix_t *A, matrix_t *result) {
+    // Логика для транспонирования матрицы
     int flag = s21_create_matrix(A->columns, A->rows, result);
 
     if (flag == 0) {
