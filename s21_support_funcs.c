@@ -107,7 +107,7 @@ void complement(matrix_t *A, matrix_t *result) {
     int coor_2 = 0;
     double deter = 0;
     matrix_t minor;
-    
+
     s21_create_matrix(A->rows, A->columns, result);
     s21_create_matrix(A->rows - 1, A->columns - 1, &minor);
     for (int i = 0; i < A->rows; i++) {
@@ -138,8 +138,7 @@ void det_logic(matrix_t *A, double *result) {
 
     if (A->rows == 1) {
         *result = A->matrix[0][0];
-    }
-    else if (A->rows == 2) {
+    } else if (A->rows == 2) {
         *result = A->matrix[0][0] * A->matrix[1][1] - A->matrix[0][1] * A->matrix[1][0];
     } else {
         for (int i = 0; i < A->rows; i++) {
