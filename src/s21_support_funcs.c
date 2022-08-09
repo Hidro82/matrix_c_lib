@@ -132,38 +132,26 @@ void complement(matrix_t *A, matrix_t *result) {
 
 void det_logic(matrix_t *A, double *result) {
     // Логика расчёта определителя матрицы
-    int coor_1 = 0;
-    int coor_2 = 0;
-    double diag = 1;
+    matrix_t comply;
+    *result = 0;
 
     if (A->rows == 1) {
         *result = A->matrix[0][0];
     } else if (A->rows == 2) {
         *result = A->matrix[0][0] * A->matrix[1][1] - A->matrix[0][1] * A->matrix[1][0];
+    } else if (A->rows == 3) {
+        *result = A->matrix[0][0] * A->matrix[1][1] * A->matrix[2][2]
+        + A->matrix[0][1] * A->matrix[1][2] * A->matrix[2][0]
+        + A->matrix[0][2] * A->matrix[1][0] * A->matrix[2][1]
+        - A->matrix[0][2] * A->matrix[1][1] * A->matrix[2][0]
+        - A->matrix[0][1] * A->matrix[1][0] * A->matrix[2][2]
+        - A->matrix[0][0] * A->matrix[1][2] * A->matrix[2][1];
     } else {
+        complement(A, &comply);
         for (int i = 0; i < A->rows; i++) {
-            for (int j = 0; j < A->columns; j++) {
-                coor_1 = j;
-                coor_2 = j + i;
-                if (coor_2 >= A->rows)
-                    coor_2 -= A->rows;
-                diag *= A->matrix[coor_1][coor_2];
-            }
-            *result += diag;
-            diag = 1;
+            *result += A->matrix[0][i] * comply.matrix[0][i];
         }
-        diag = -1;
-        for (int i = (A->rows - 1); i >= 0; i--) {
-            for (int j = 0; j < A->columns; j++) {
-                coor_1 = j;
-                coor_2 = i - j;
-                if (coor_2 < 0)
-                    coor_2 += A->rows;
-                diag *= A->matrix[coor_1][coor_2];
-            }
-            *result += diag;
-            diag = -1;
-        }
+        s21_remove_matrix(&comply);
     }
 }
 
