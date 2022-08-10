@@ -1,7 +1,7 @@
 CC = gcc
 # OBJECTS =
 # SOURSES = 
-# ASAN = -fsanitize=address
+ASAN = -fsanitize=address
 FLAGC = -c
 FLAGO = -o
 GCOVFLAGS = -lcheck -lgcov -coverage

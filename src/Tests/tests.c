@@ -215,10 +215,6 @@ START_TEST(inv_test) {
   d.matrix[2][1] = -2.0 / 9;
   d.matrix[2][2] = -1.0 / 18;
   int res = s21_inverse_matrix(&a, &c);
-  printf("matrix_c:\n");
-  matrix_print(&c);
-  printf("matrix_d:\n");
-  matrix_print(&d);
   if (!res)
     ck_assert_int_eq(s21_eq_matrix(&c, &d), 1);
   else
@@ -248,7 +244,7 @@ START_TEST(eq_test) {
 }
 END_TEST
 
-START_TEST(det_test) {
+START_TEST(det_test_1) {
   matrix_t a;
   double b;
   s21_create_matrix(5, 5, &a);
@@ -263,6 +259,55 @@ START_TEST(det_test) {
   a.matrix[4][3] = 8;
   s21_determinant(&a, &b);
   ck_assert_double_eq_tol(b, -86400, 1e-6);
+  s21_remove_matrix(&a);
+}
+END_TEST
+
+START_TEST(det_test_2) {
+  matrix_t a;
+  double b;
+  s21_create_matrix(4, 4, &a);
+  a.matrix[0][0] = -1;
+  a.matrix[0][1] = 20;
+  a.matrix[0][2] = 6;
+  a.matrix[1][1] = 40;
+  a.matrix[1][3] = -2;
+  a.matrix[2][1] = 5;
+  a.matrix[2][2] = -45;
+  a.matrix[3][0] = 15;
+  a.matrix[3][2] = -45;
+  a.matrix[3][3] = 60;
+  s21_determinant(&a, &b);
+  ck_assert_double_eq_tol(b, 135450, 1e-6);
+  s21_remove_matrix(&a);
+}
+END_TEST
+
+START_TEST(det_test_3) {
+  matrix_t a;
+  double b;
+  s21_create_matrix(6, 6, &a);
+  a.matrix[0][0] = -1;
+  a.matrix[0][1] = 20;
+  a.matrix[0][2] = 6;
+  a.matrix[1][1] = 40;
+  a.matrix[1][3] = -2;
+  a.matrix[1][5] = 9;
+  a.matrix[2][1] = 5;
+  a.matrix[2][2] = -45;
+  a.matrix[3][0] = 15;
+  a.matrix[3][2] = -45;
+  a.matrix[3][3] = 60;
+  a.matrix[3][4] = 86;
+  a.matrix[3][5] = -34;
+  a.matrix[4][0] = 14;
+  a.matrix[4][2] = -7;
+  a.matrix[4][4] = -88;
+  a.matrix[5][2] = 13;
+  a.matrix[5][3] = 90;
+  a.matrix[5][5] = -17;
+  s21_determinant(&a, &b);
+  ck_assert_double_eq_tol(b, -2124255920, 1e-6);
   s21_remove_matrix(&a);
 }
 END_TEST
@@ -323,7 +368,9 @@ int main(void) {
   tcase_add_test(tc1_1, trans_test);
   tcase_add_test(tc1_1, inv_test);
   tcase_add_test(tc1_1, eq_test);
-  tcase_add_test(tc1_1, det_test);
+  tcase_add_test(tc1_1, det_test_1);
+  tcase_add_test(tc1_1, det_test_2);
+  tcase_add_test(tc1_1, det_test_3);
   tcase_add_test(tc1_1, subnormal);
 
   srunner_set_fork_status(sr, CK_NOFORK);

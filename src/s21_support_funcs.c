@@ -124,7 +124,11 @@ void complement(matrix_t *A, matrix_t *result) {
                 }
             }
             s21_determinant(&minor, &deter);
-            result->matrix[i][j] = deter;
+            if (((A->rows % 2) == 0) && ((i + j) % 2) != 0) {
+                result->matrix[i][j] = -deter;
+            } else {
+                result->matrix[i][j] = deter;
+            }
         }
     }
     s21_remove_matrix(&minor);
