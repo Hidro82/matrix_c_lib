@@ -1,7 +1,7 @@
 CC = gcc
 # OBJECTS =
 # SOURSES = 
-ASAN = -fsanitize=address
+# ASAN = -fsanitize=address
 FLAGC = -c
 FLAGO = -o
 GCOVFLAGS = -lcheck -lgcov -coverage
@@ -42,13 +42,13 @@ gcov_report: test
 
 check: s21_matrix.a
 	@cppcheck *.h *.c
-#	@cp ../materials/linters/CPPLINT.cfg ./
-#	@python3 ../materials/linters/cpplint.py --extension=c $(s21_matrix_C) s21_matrix.h $(TEST_C) $(MAIN_C) Tests/tests.h
+	@cp ../materials/linters/CPPLINT.cfg ./
+	@python3 ../materials/linters/cpplint.py --extension=c $(s21_matrix_C) s21_matrix.h $(TEST_C) $(MAIN_C) Tests/tests.h
 	@$(CC) *.c $(TEST_C) $(MAIN_C) -lcheck -lm
 	@valgrind --leak-check=full ./a.out
-#	@rm CPPLINT.cfg
+	@rm CPPLINT.cfg
 	CK_FORK=no leaks --atExit -- ./matrix_test
-#	mv *.gcda covers
+	mv *.gcda covers
 
 clean:
 	rm -rf a.out *.gcda *.gcno *.gcov ./covers/*.gcno html/*.css ./matrix_test ./obj/*.o ./*.a ./Tests/obj/*.o ./Tests/*.a ./html/coverage*.html ./covers/*.gcov ./covers/*.gcda ./CPPLINT*
